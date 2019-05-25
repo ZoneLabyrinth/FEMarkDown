@@ -29,5 +29,29 @@
 
 
 
+## BEM
+
+即`block`，`__element`，`—modifier`命令css类名
+
+**block** ，一个快就是一个组件
+
+**Modifier**  修饰符
+
+
+
+```
+[class*='button']:not([class*='button__']) { 
+	padding: 0.5em 0.75em; 
+}
+
+
+```
+
+
+
+
+
+
+
 
 
