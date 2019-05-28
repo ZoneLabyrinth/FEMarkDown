@@ -87,13 +87,13 @@ https://gtmetrix.com/blog/first-contentful-paint-explained/
 
 图2是从测试页面结果加载页面的可视进度
 
-![スクリーンショット 2016-04-04 午後7.20.58.png](https://lh3.googleusercontent.com/P0D0d3GGbsZfCZjV-wYpNdNRvMSxpr2m_KoFG7R9pegnWBCtZXR-VpDpSuQfVdVjPaK17K4dk8DV_gL-goS7W4lMmHUJWVBG7_M08rfZC-ZUdnnaVgnDyLjprZlmNH4XZBojKjJK)
+![スクリーンショット 2016-04-04 午後7.20.58.png](http://ww4.sinaimg.cn/large/006tNc79ly1g3h4srarp9j30db09r0t1.jpg)
 
 ​															**图1**
 
 
 
-![スクリーンショット 2016-04-04 午後6.55.23.png](https://lh4.googleusercontent.com/HUckdAudrck2OLOgVM2nQOQENS7Kddw54i8lcIMEPqpDmZVnzTubC_rt6mPhAoEkNZdW5CAJV0fygpIKAk1rVlJOWtHgZfYpBPuqi-5M5r7w7mWI8bwEE_gRn4L2T6AiOH7lT35K)
+![スクリーンショット 2016-04-04 午後6.55.23.png](http://ww1.sinaimg.cn/large/006tNc79ly1g3h4sozhglj30jm06i0uu.jpg)
 
 ​															**图2**
 

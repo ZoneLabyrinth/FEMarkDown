@@ -77,7 +77,7 @@ key 用于识别唯一的 Virtual DOM 元素及其驱动 UI 的相应数据。�
 
 ###  **解释一下 Flux**
 
-![img](https://segmentfault.com/img/bVbqdVk?w=796&h=262)
+![img](http://ww4.sinaimg.cn/large/006tNc79ly1g3h4wr38eaj30m407at97.jpg)
 
 Flux 是一种强制单向数据流的架构模式。它控制派生数据，并使用具有所有数据权限的中心 store 实现多个组件之间的通信。整个应用中的数据更新必须只能在此处进行。 Flux 为应用提供稳定性并减少运行时的错误。
 
@@ -93,7 +93,38 @@ Redux 由以下组件组成：
 
 
 
+## DIFF算法
 
+diff算法用于计算出两个virtual dom的差异，是react中开销最大的地方。
 
+传统diff算法通过循环递归对比差异，算法复杂度为O(n3)。
 
+react diff算法制定了三条策略，将算法复杂度从 O(n3)降低到O(n)。
+
+- WebUI中DOM节点跨节点的操作特别少，可以忽略不计。
+- 拥有相同类的组件会拥有相似的DOM结构。拥有不同类的组件会生成不同的DOM结构。
+- 同一层级的子节点，可以根据唯一的`ID`来区分。
+
+针对这三个策略，react diff实施的具体策略是:
+
+1. diff对树进行分层比较，只对比两棵树同级别的节点。跨层级移动节点，将会导致节点删除，重新插入，无法复用。
+2. diff对组件进行类比较，类相同的递归diff子节点，不同的直接销毁重建。diff对同一层级的子节点进行处理时，会根据key进行简要的复用。两棵树中存在相同key的节点时，只会移动节点。
+
+另外，在对比同一层级的子节点时:
+
+diff算法会以新树的第一个子节点作为起点遍历新树，寻找旧树中与之相同的节点。
+
+如果节点存在，则移动位置。如果不存在，则新建一个节点。
+
+在这过程中，维护了一个字段lastIndex，这个字段表示已遍历的所有新树子节点在旧树中最大的index。
+在移动操作时，只有旧index小于lastIndex的才会移动。
+
+这个顺序优化方案实际上是基于一个假设，大部分的列表操作应该是保证列表基本有序的。
+可以推倒倒序的情况下，子节点列表diff的算法复杂度为O(n2)
+
+![clipboard.png](http://ww3.sinaimg.cn/large/006tNc79ly1g3gyx5eag5j30m80d7ab6.jpg)
+
+![clipboard.png](http://ww3.sinaimg.cn/large/006tNc79ly1g3gyxajknej30lk0bwjsa.jpg)
+
+![clipboard.png](http://ww1.sinaimg.cn/large/006tNc79ly1g3gyxdqmfvj30ju0c0jsb.jpg)
 

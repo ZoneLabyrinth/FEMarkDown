@@ -20,10 +20,6 @@ React和Vue的范围无可否认相似：两者都是基于轻量级组件的库
 
 
 
-![img](https://cdn-images-1.medium.com/max/1600/1*0_PABYfDH4JN8GDzg2rgvA.jpeg)
-
-安东尼（左）和亚历克西斯（右）比较泰国清迈Bull and Bear Cafe的React和Vue
-
 经过双方的大量讨论和学习，以下六点是我们的主要发现。
 
 #### 如果您喜欢使用模板构建应用程序（或想要选项），请使用Vue。
@@ -130,7 +126,7 @@ Vue核心开发人员提供了一个基准测试，显示Vue的渲染系统比Re
 
 
 
-![img](https://cdn-images-1.medium.com/max/1600/1*xy2KzzZrqP0mdLUbIdC-xA.png)
+![img](http://ww4.sinaimg.cn/large/006tNc79ly1g3h4xmgch4j318g0grgmq.jpg)
 
 在vuejs.org上发布的基准
 
@@ -184,7 +180,7 @@ AppRegistry.registerComponent（'HelloWorld'，（）=> HelloWorld）;
 
 
 
-![img](https://cdn-images-1.medium.com/max/1600/1*YTD_ZbHE77GWKzYJVGh_Fw.png)
+![img](http://ww3.sinaimg.cn/large/006tNc79ly1g3h4xor723j318g0i50um.jpg)
 
 人气不仅仅是一个浅薄的利益。这意味着有更多的文章，教程和Stack Overflow答案可以提供帮助。这意味着有更多工具和附加组件可以在项目中使用，并使开发人员无法自行构建所有内容。
 

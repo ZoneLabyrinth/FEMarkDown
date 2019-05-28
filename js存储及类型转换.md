@@ -19,7 +19,7 @@ console.log(p1) // -> zzz,20
 console.log(p2) //->  lll,30
 ```
 
-![img](https://user-gold-cdn.xitu.io/2018/11/14/16712ce155afef8c?imageslim)
+![img](http://ww3.sinaimg.cn/large/006tNc79ly1g3h4tb06ibj30ia0bi74c.jpg)
 
 # 对象类型转换
 
@@ -60,7 +60,7 @@ x == y
 （3）如果任一值时布尔值，则在比较相等性之前先将其转换为数值，即是调用Number()函数。 
 （4）如果一个是对象，另一个是数值或字符串，把对象转换成基础类型的值再比较。对象转换成基础类型，利用它的toString或者valueOf方法。 js核心内置类，会尝试valueOf先于toString；例外的是Date，Date利用的是toString转换。
 
-![img](https://user-gold-cdn.xitu.io/2018/12/19/167c4a2627fe55f1?imageslim)
+![img](http://ww2.sinaimg.cn/large/006tNc79ly1g3h4wef51xj30rx0buglx.jpg)
 
 ### 创建特定大小的数组
 
