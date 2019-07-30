@@ -10,7 +10,7 @@
 
    **componentWillReceiveProps**在初始化**render**的时候不会执行，它会在**Component**接受到新的状态(**Props**)时被触发，一般用于父组件状态更新时子组件的重新渲染。这个东西十分好用，但是一旦用错也会造成十分严重的后果，避免修改父组件传入的props值造成的死循环。
 
-   ```
+   ```js
    componentWillReceiveProps(nextProps){
            if(nextProps.collapseAll !== this.props.collapseAll){
                this.setState({ collapse: false });
@@ -20,13 +20,13 @@
        }
    ```
 
-4. **shouldComponentUpdate****()** – 根据特定条件返回 true 或 false。如果你希望更新组件，请返回**true** 否则返回 **false**。默认情况下，它返回 false。
+4. **shouldComponentUpdate()** – 根据特定条件返回 true 或 false。如果你希望更新组件，请返回**true** 否则返回 **false**。默认情况下，它返回 false。
 
-5. **componentWillUpdate****()** – 在 DOM 中进行渲染之前调用。
+5. **componentWillUpdate()** – 在 DOM 中进行渲染之前调用。
 
-6. **componentDidUpdate****()** – 在渲染发生后立即调用。
+6. **componentDidUpdate()** – 在渲染发生后立即调用。
 
-7. **componentWillUnmount****()** – 从 DOM 卸载组件后调用。用于清理内存空间。
+7. **componentWillUnmount()** – 从 DOM 卸载组件后调用。用于清理内存空间。
 
 ### Refs
 

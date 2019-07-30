@@ -272,6 +272,5 @@ React的优势：
 
 ### React
 
-1. **`getinitailstate`**
+![image-20190730205154970](http://ww4.sinaimg.cn/large/006tNc79ly1g5i5plr9aij31ii0u0dk2.jpg) 
 
-   
