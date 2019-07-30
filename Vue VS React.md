@@ -214,3 +214,64 @@ React的优势：
 - 伟大的支持和社区
 
 如果您认为我们错过了一些我们希望在评论中听到的内容。快乐发展！
+
+
+
+## 生命周期
+
+### Vue
+
+1. **`beforeCreate`**
+
+   组件和data都为undefined
+
+2. **`created`**
+
+   el还是undefined，而数据已经和data中的属性进行绑定（放在data中属性当值发生改变的同时，视图也会发生变化），在这里可以在渲染前倒数第二次更改数据的机会，不会触发其他的钩子函数，一般可以在这里做初始数据的获取
+
+   > 从created到beforeMount的过程中，
+   >
+   > - **首先会判断vue实例中有没有el选项，如果有的话则进行下面的编译，但是如果没有el选项，则停止生命周期，直到vue实例上调用vm.$mount(el)**。
+   > - 如果有el，再判断是否有template参数，如果有，则把其当作模板编译成render函数，如果没有，则把外部的html作为模板编译。template中的模板优先级高于outer HTML模板。
+   > - 在vue对象中还有一个render函数，它是以createElement作为参数，然后做渲染操作，而且我们可以直接嵌入JSX.
+   > - 综合排名优先级：render函数选项 > template选项 > outer HTML.
+
+   **如果要在created阶段中进行dom操作，就要将操作都放在 Vue.nextTick() 的回调函数中，因为created() 钩子函数执行的时候 DOM 其实并未进行任何渲染，而此时进行 DOM 操作无异于徒劳，所以此处一定要将 DOM 操作的 js 代码放进 Vue.nextTick() 的回调函数中。**
+
+3. **`beforeMount`**
+
+   完成data和el数据初始化，但是页面中还只是vue占位符，可以在渲染前最后一次更改数据，可以在此获取初始数据
+
+4. **`mounted`**
+
+   载入，dom挂载，可以在此使用`ajax`
+
+5. **`beforeUpdate`**:
+
+   更新当前状态，重新渲染前，使用虚拟dom和diff算法对比
+
+6. **`updated`**
+
+   dom重新渲染完成
+
+7. **`beforeDestroy`**
+
+   组件销毁前（清楚事件绑定，计数器等）
+
+8. **`destroyed`**:
+
+   销毁后（Dom存在，但不受Vue控制），卸载vue事件（watcher，事件监听，子组件等）
+
+#### 一般使用情况
+
+- beforeCreate: 使用Loading
+- created:结束Loading，初始数据获取
+- mounted: ajax请求
+- beforeDestroy：退出确认
+- destroyed: 内存清理
+
+### React
+
+1. **`getinitailstate`**
+
+   
