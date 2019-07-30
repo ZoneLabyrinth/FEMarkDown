@@ -133,7 +133,7 @@ console.log(user)
 
 在一个函数中，首先填充几个参数，然后再返回一个新的函数的技术，称为函数的柯里化。通常可用于在不侵入函数的前提下，为函数 **预置通用参数**，供多次重复调用。
 
-```
+```js
 const add = function add(x) {
 	return function (y) {
 		return x + y
@@ -145,6 +145,34 @@ const add1 = add(1)
 add1(2) === 3
 add1(20) === 21
 ```
+
+##### 实现：
+
+```js
+	function add(...args) {
+            return args.reduce((a, b) => a + b)
+        }
+		
+		//判断参数是否足够，足够就调用apply，否则用bind返回延迟执行，并减少参数个数
+        function currying(fn, length) {
+            length = length || fn.length;
+            return function (...args) {
+                return args.length >= length
+                    ? fn.apply(this, args)
+                    : currying(fn.bind(this, ...args), length - args.length)
+            }
+        }
+
+        const fn = currying(function (a, b, c) {
+            console.log([a, b, c])
+        })
+
+        const sum = currying(add, 3)
+```
+
+
+
+
 
 ### 数组(array)
 
@@ -200,3 +228,62 @@ Array.prototype.flat = function() {
 - **CPU节能**：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，**当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，**因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。
 
 - **函数节流**：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。
+
+### call/apply/bind原理实现
+
+```js
+
+        Function.prototype._call = function (fn, ...args) {
+            if (typeof this !== 'function') {
+                throw new Error('this is not a function')
+            }
+            let context = fn || window;
+            // args = [...arguments].slice(1)
+            context.fn = this;
+            var result = context.fn(...args)
+            delete context.fn
+            return result
+        }
+
+
+        let a = [1, 2, 3, 4, 6, 7]
+        let b = Math.max._call(null, ...a)
+        console.log(b)
+
+        Function.prototype._apply = function (fn) {
+            if (typeof this !== 'function') {
+                throw new Error('this is not a function')
+            }
+            let context = fn || window;
+            context.fn = this;
+            let result;
+            if (arguments[1]) {
+                result = context.fn(...arguments[1])
+            } else {
+                result = context.fn()
+            }
+            delete context.fn
+            return result
+        }
+
+        let c = Math.max._apply(null, a)
+        console.log(c)
+
+        Function.prototype._bind = function (fn) {
+            if (typeof this !== 'function') {
+                throw new TypeError('Error')
+            }
+            let args = [...arguments].slice(1)
+            const context = this
+            return function F() {
+                let arg = args.concat([...arguments])
+                let result;
+                if (this instanceof F) {
+                    return new context(...arg)
+                } 
+                return context.apply(fn,arg)
+            }
+        }
+```
+
+
