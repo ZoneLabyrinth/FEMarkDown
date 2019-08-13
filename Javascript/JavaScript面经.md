@@ -286,4 +286,21 @@ Array.prototype.flat = function() {
         }
 ```
 
+### New实现
+
+1. 创建一个空对象,这个对象将会是`new Person()`返回的对象实例;
+2. 将这个空对象的原型指向`构造函数`的`prototype`属性;
+3. 将`构造函数`的`this`指向空对象,并运行`构造函数`;
+4. 判断`构造函数`返回的是不是`对象`,是的话返回`默认对象`,不是的话返回之前创建的`空对象`,没有返回值默认返回`空对象`
+
+
+
+```
+function _new(fn,...args){
+                let obj = Object.create(fn.prototype)
+                const ret = fn.apply(obj,args)
+                return ret instanceof Object? ret : obj
+
+            }
+```
 
