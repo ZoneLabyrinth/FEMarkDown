@@ -14,7 +14,7 @@ const instance = new Object()
 
 则此时， **实例为instance**, **构造函数为Object**，我们知道，构造函数拥有一个`prototype`的属性指向原型，因此原型为:
 
-```
+```js
 // 原型
 const prototype = Object.prototype
 复制代码
@@ -22,7 +22,7 @@ const prototype = Object.prototype
 
 这里我们可以来看出三者的关系:
 
-```
+```js
 实例.__proto__ === 原型
 
 原型.constructor === 构造函数
@@ -61,7 +61,7 @@ const prototype = Object.prototype
 
 ##### 实现
 
-```
+```js
 function New() {
         // if (typeof fn !==)
         let obj = {};
@@ -97,7 +97,7 @@ function New() {
     - `yield`: 暂停代码
     - `next()`: 继续执行代码
 
-```
+```js
 function* helloWorld() {
   yield 'hello';
   yield 'world';
@@ -119,7 +119,7 @@ generator.next()  // { value: undefined, done: true }
 
 - `await / async`: 是`generator`的语法糖， babel中是基于`promise`实现。
 
-```
+```js
 async function getUserByAsync(){
    let user = await fetchUser();
    return user;
