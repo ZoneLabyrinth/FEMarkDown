@@ -1,3 +1,15 @@
+
+
+微任务队列，优先级 promise -> MutationObserver->setImmidate->setTimeout
+
+
+
+
+
+
+
+
+
 ```js
 //执行一次timerfunc
 let pending = false
