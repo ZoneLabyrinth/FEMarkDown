@@ -2,7 +2,7 @@
 
 - 原型`(prototype)`: 一个简单的对象，用于实现对象的 **属性继承**。可以简单的理解成对象的爹。在 Firefox 和 Chrome 中，每个`JavaScript`对象中都包含一个`__proto__` (非标准)的属性指向它爹(该对象的原型)，可`obj.__proto__`进行访问。
 - 构造函数: 可以通过`new`来 **新建一个对象** 的函数。
-- 实例: 通过构造函数和`new`创建出来的对象，便是实例。 **实例通过__proto__指向原型，通过constructor指向构造函数**。
+- 实例: 通过构造函数和`new`创建出来的对象，便是实例。 **实例通过\_\_proto\_\_指向原型，通过constructor指向构造函数**。
 
 说了一大堆，大家可能有点懵逼，这里来举个栗子，以`Object`为例，我们常用的`Object`便是一个构造函数，因此我们可以通过它构建实例。
 
@@ -211,23 +211,23 @@ Array.prototype.flat = function() {
 
 
 
-- clientHeight：表示的是可视区域的高度，不包含 border 和滚动条。
-- offsetHeight：表示可视区域的高度，包含了 border 和滚动条。
-- scrollHeight：表示了所有区域的高度，包含了因为滚动被隐藏的部分。
-- clientTop：表示边框 border 的厚度，在未指定的情况下一般为 0。
-- scrollTop：滚动后被隐藏的高度，获取对象相对于由 offsetParent 属性指定的父坐标（css 定位的元素或 body 元素）距离顶端的高度。
+- `clientHeight`：表示的是可视区域的高度，不包含 border 和滚动条。
+- `offsetHeight`：表示可视区域的高度，包含了 border 和滚动条。
+- `scrollHeight`：表示了所有区域的高度，包含了因为滚动被隐藏的部分。
+- `clientTop`：表示边框 border 的厚度，在未指定的情况下一般为 0。
+- `scrollTop`：滚动后被隐藏的高度，获取对象相对于由 `offsetParent` 属性指定的父坐标（`css` 定位的元素或 body 元素）距离顶端的高度。
 
 
 
-### requestAnimationFrame
+### `requestAnimationFrame`
 
-与setInterval相比，requestAnimationFrame最大的优势是**由系统来决定回调函数的执行时机。**具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。**它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次**，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。
+与`setInterval`相比，`requestAnimationFrame`最大的优势是**由系统来决定回调函数的执行时机。**具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，`requestAnimationFrame`的步伐跟着系统的刷新步伐走。**它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次**，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。
 
-除此之外，requestAnimationFrame还有以下两个优势：
+除此之外，`requestAnimationFrame`还有以下两个优势：
 
-- **CPU节能**：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，**当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，**因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。
+- **CPU节能**：使用`setTimeout`实现的动画，当页面被隐藏或最小化时，`setTimeout` 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而`requestAnimationFrame`则完全不同，**当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，**因此跟着系统步伐走的`requestAnimationFrame`也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。
 
-- **函数节流**：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。
+- **函数节流**：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用`requestAnimationFrame`可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。
 
 ### call/apply/bind原理实现
 
