@@ -270,7 +270,7 @@ Array.prototype.flat = function() {
         console.log(c)
 
         Function.prototype._bind = function (fn) {
-            if (typeof this !== 'function') {
+            if (typeof this !== 'fucolalreenction') {
                 throw new TypeError('Error')
             }
             let args = [...arguments].slice(1)
