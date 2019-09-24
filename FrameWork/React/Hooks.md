@@ -26,7 +26,7 @@ React 没有提供将可复用性行为“附加”到组件的途径（例如�
 
 ### 使用规则
 
-- 只能在 **函数最外层** 调用Hook。不要在循环、条件判断或者子函数中调用
+- 只能在 **函数最外层** 调用Hook。不要在循环、条件判断或者子函数中调用（确保顺序）
 - 只能在 **React的函数组件** 中调用Hook。
 
 
@@ -81,5 +81,32 @@ React 保持对当先渲染中的组件的追踪。多亏了 [Hook 规范](https
 
 - 做了什么：使用该hook，React组件会在渲染后执行某些操作。React会保存你传递的函数，并在 **执行DOM更新之后调用它**。可以执行数据获取或调用其他命令式的API
 - 为什么在组件内部调用：放在组件内可以在effect函数中直接访问 state变量（或者其他props）。不需要其他特殊API来读取它——它已经保存在作用域中了。Hook使用了js闭包机制，而不用在 JavaScript 已经提供了解决方案的情况下，还引入特定的 React API。
-- 执行：**每次渲染后都会执行**。在第一次渲染后和每次更新之前都会执行。
-- 
+- 执行：**每次渲染后都会执行**。在**第一次渲染后和每次更新之前**都会执行。React保证了每次运行`effect`同时，DOM都已经更新完毕
+
+与 `componentDidMount` 或 `componentDidUpdate` 不同，使用 `useEffect` 调度的 effect 不会阻塞浏览器更新屏幕，这让你的应用看起来响应更快。大多数情况下，effect 不需要同步地执行。在个别情况下（例如测量布局），有单独的 [`useLayoutEffect`](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-reference.html#uselayouteffect) Hook 供你使用，其 API 与 `useEffect` 相同。
+
+- 为什么返回一个函数：讲事件逻辑放在一起
+- 何时清除Effect：在组件卸载时执行清除操作。每次执行effect时，会对上一个effect进行清除，保证props等发生改变而不更新ui的bug。
+
+
+
+##### 跳过清除：判断第二个参数
+
+```js
+useEffect(() => {
+  document.title = `You clicked ${count} times`;
+}, [count]); // 仅在 count 更改时更新
+```
+
+如果你要使用此优化方式，请确保数组中包含了**所有外部作用域中会随时间变化并且在 effect 中使用的变量**，否则你的代码会引用到先前渲染中的旧变量
+
+如果想执行只运行一次的 effect（仅在组件挂载和卸载时执行），可以传递一个空数组（`[]`）作为第二个参数。这就告诉 React 你的 effect 不依赖于 props 或 state 中的任何值，所以它永远都不需要重复执行。这并不属于特殊情况 —— 它依然遵循依赖数组的工作方式。
+
+如果你传入了一个空数组（`[]`），effect 内部的 props 和 state 就会一直拥有其初始值。尽管传入 `[]` 作为第二个参数更接近大家更熟悉的 `componentDidMount` 和 `componentWillUnmount` 思维模式，但我们有[更好的](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies)[方式](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-faq.html#what-can-i-do-if-my-effect-dependencies-change-too-often)来避免过于频繁的重复调用 effect。除此之外，请记得 React 会等待浏览器完成画面渲染之后才会延迟调用 `useEffect`，因此会使得额外操作很方便。
+
+
+
+
+
+
+
