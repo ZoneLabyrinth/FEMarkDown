@@ -2,13 +2,13 @@
 
 一些最重要的生命周期方法是：
 
-1. **componentWillMount****()** – 在渲染之前执行，在客户端和服务器端都会执行。
+1. **componentWillMount()** – 在渲染之前执行，在客户端和服务器端都会执行。
 
-2. **componentDidMount****()** – 仅在第一次渲染后在客户端执行。
+2. **componentDidMount()** – 仅在第一次渲染后在客户端执行。
 
-3. **componentWillReceiveProps****(nextProps)** – 当从父类接收到 props 并且在调用另一个渲染器之前调用。
+3. **componentWillReceiveProps(nextProps)** – 当从父类接收到 props 并且在调用另一个渲染器之前调用。
 
-   **componentWillReceiveProps**在初始化**render**的时候不会执行，它会在**Component**接受到新的状态(**Props**)时被触发，一般用于父组件状态更新时子组件的重新渲染。这个东西十分好用，但是一旦用错也会造成十分严重的后果，避免修改父组件传入的props值造成的死循环。
+   **componentWillReceiveProps**  在**初始化render的时候不会执行**，它会在**Component**接受到新的状态(**Props**)时被触发，一般用于父组件状态更新时子组件的重新渲染。这个东西十分好用，但是一旦用错也会造成十分严重的后果，避免修改父组件传入的props值造成的死循环。
 
    ```js
    componentWillReceiveProps(nextProps){
@@ -54,7 +54,7 @@ HOC可用于许多任务，例如：
 
   
 
-  ### 你对受控组件和非受控组件了解多少？**
+  ### 你对受控组件和非受控组件了解多少？
 
   | **受控组件**                                   | **非受控组件**           |
   | :--------------------------------------------- | :----------------------- |
@@ -77,7 +77,7 @@ key 用于识别唯一的 Virtual DOM 元素及其驱动 UI 的相应数据。�
 
 ###  **解释一下 Flux**
 
-![img](http://ww4.sinaimg.cn/large/006tNc79ly1g3h4wr38eaj30m407at97.jpg)
+![img](https://tva1.sinaimg.cn/large/006y8mN6ly1g73u2qufabj30m407awer.jpg)
 
 Flux 是一种强制单向数据流的架构模式。它控制派生数据，并使用具有所有数据权限的中心 store 实现多个组件之间的通信。整个应用中的数据更新必须只能在此处进行。 Flux 为应用提供稳定性并减少运行时的错误。
 
