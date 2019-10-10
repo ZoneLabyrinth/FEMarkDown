@@ -6,10 +6,10 @@
 
 - 触发条件
   - 根元素
-  - *position:absolute/fixed*
-  - *display：inline-block/table*
+  - `position:absolute/fixed`
+  - `display：inline-block/table`
   - *float*元素
-  - *overflow!==visible2*
+  - `overflow!==visible2`
 - 规则：
   - 属于同一个BFC的两个相邻box垂直排列
   - 属于同一个BFC的两个相邻box的margin会发生重叠
