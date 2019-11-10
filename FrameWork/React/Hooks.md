@@ -49,7 +49,60 @@ React 保持对当先渲染中的组件的追踪。多亏了 [Hook 规范](https
 - 参数：唯一的参数就是state初始值。不同于class的是，可以不一定是对象。存储不同变量多次调用即可
 - 返回值：当前state以及更新state的函数。
 
-注：首次渲染state会使用useState()中的初始值，设置setState无效
+`setState()`可以接受一个回调函数来执行连续更新`state`值
+
+```js
+const [count,setCount] =useState(0)
+
+function fn(){
+  setCount(c=>c+1);
+  setCount(c=>c+1);
+  //渲染时为2
+}
+
+
+//若直接使用值形式
+function val(){
+	setCount(count+1);
+	setCount(count+1);
+	//渲染值为1，由于闭包原因，实际上第二次的setCount时count还是1，就是执行了两次setCount(1)；
+}
+```
+
+
+
+某些情况下可以使用`useState`创建只希望渲染一次的函数；
+
+```js
+function comp(){
+		function initFun(){
+				console.log('...');
+				return 1;
+		}
+		//直接使用initFun作为参数每次渲染时候都会执行，输出...
+		const [count,setCount] = useState(initFun());
+		
+		//使用回调函数则可以避免每次调用
+		const [cb,setCb] = useState(()=>initFun());
+}
+
+//useRef也能实现类似效果
+function Charts(props) {
+  const node = useRef(null);
+  // 只会被创建一次
+  function getObserver() {
+    if (node.current === null) {
+      node.current = new Chart();
+    }
+    return node.current;
+  }
+
+  // 当你需要，调用 getObserver()
+}
+
+
+//虽然useMemo也能做缓存，但不能保证不会重新运行。
+```
 
 
 
@@ -103,6 +156,89 @@ useEffect(() => {
 
 
 #### useCallback
+
+
+
+
+
+
+
+### 性能优化
+
+类组件中有`PureComponent`实现的浅比较以及`shouldComponentUpdate()`周期函数可以用于性能优化。在`hooks`中，可以使用`React.memo`来做优化。
+
+`React.memo`不是一个Hook，它等同于`PureComponent`，但它只比较`props`，因为没有单一的`state`可以比较。
+
+`React.memo`接收第二个参数来指定自定义比较`props`的函数。如果返回true,则跳过更新。
+
+```js
+function App() {
+
+  const [count,setCount] = useState(0);
+  const [val,setVal] = useState('');
+
+
+  return (
+    <div className="App">
+      {count}
+      <Child count={count}/>
+      <button onClick={()=>setCount(count+1)}>点击+1</button>
+      <input value={val} onChange={e=> setVal(e.target.value)} />
+    </div>
+  );
+}
+//一般情况
+function Child(props){
+    console.log('Child');
+
+    return (
+        <div>
+            {props.count}
+        </div>
+    )
+
+}
+
+```
+
+![no](https://tva1.sinaimg.cn/large/006y8mN6ly1g8qz14ic43g30i80beacx.gif)
+
+```js
+//使用memo
+const Child = React.memo(function(props){
+    console.log('Child');
+
+    return (
+        <div>
+            {props.count}
+        </div>
+    )
+})
+```
+
+![yes](https://tva1.sinaimg.cn/large/006y8mN6ly1g8qz15txnxg30i80bego2.gif)
+
+使用了`React.memo`之后，父组件传入子组件的props不改变时，子组件不会发生渲染。
+
+或者使用useMemo同样能达到优化效果
+
+```js
+function App() {
+  const [count, setCount] = useState(0);
+  const [val, setVal] = useState('');
+  const child = useMemo(() => <Child count={count} /> , [count]) //使用useMemo缓存组件
+  return (
+    <div className="App">
+      {count}
+      {child} //调用
+      <button onClick={() => setCount(count + 1)}>点击+1</button>
+      <input value={val} onChange={e => setVal(e.target.value)} />
+    </div>
+  );
+}
+```
+
+
 
 
 
