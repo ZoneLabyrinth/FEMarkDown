@@ -4,12 +4,6 @@
 
 
 
-
-
-
-
-
-
 ```js
 //执行一次timerfunc
 let pending = false

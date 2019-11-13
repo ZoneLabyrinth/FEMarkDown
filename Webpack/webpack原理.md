@@ -1,4 +1,4 @@
-### `wepack`启动过程
+### `webpack`启动过程
 
 `npm run dev` 进入`node_modules/.bin`查找` webpack.cmd/webpack.sh`
 

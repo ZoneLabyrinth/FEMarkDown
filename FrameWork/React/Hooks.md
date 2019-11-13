@@ -24,7 +24,7 @@ React 没有提供将可复用性行为“附加”到组件的途径（例如�
 
 为了解决这些问题，**Hook 使你在非 class 的情况下可以使用更多的 React 特性。** 从概念上讲，React 组件一直更像是函数。而 Hook 则拥抱了函数，同时也没有牺牲 React 的精神原则。Hook 提供了问题的解决方案，无需学习复杂的函数式或响应式编程技术。
 
-### 使用规则
+## 使用规则
 
 - 只能在 **函数最外层** 调用Hook。不要在循环、条件判断或者子函数中调用（确保顺序）
 - 只能在 **React的函数组件** 中调用Hook。
@@ -39,8 +39,6 @@ React 保持对当先渲染中的组件的追踪。多亏了 [Hook 规范](https
 
 每个组件内部都有一个「记忆单元格」列表。它们只不过是我们用来存储一些数据的 JavaScript 对象。当你用 `useState()` 调用一个 Hook 的时候，它会读取当前的单元格（或在首次渲染时将其初始化），然后把指针移动到下一个。这就是多个 `useState()` 调用会得到各自独立的本地 state 的原因。
 
-### 
-
 ### Hooks
 
 #### useState （状态）
@@ -51,13 +49,64 @@ React 保持对当先渲染中的组件的追踪。多亏了 [Hook 规范](https
 - 参数：唯一的参数就是state初始值。不同于class的是，可以不一定是对象。存储不同变量多次调用即可
 - 返回值：当前state以及更新state的函数。
 
+`setState()`可以接受一个回调函数来执行连续更新`state`值
+
+```js
+const [count,setCount] =useState(0)
+
+function fn(){
+  setCount(c=>c+1);
+  setCount(c=>c+1);
+  //渲染时为2
+}
+
+
+//若直接使用值形式
+function val(){
+	setCount(count+1);
+	setCount(count+1);
+	//渲染值为1，由于闭包原因，实际上第二次的setCount时count还是1，就是执行了两次setCount(1)；
+}
+```
 
 
 
+某些情况下可以使用`useState`创建只希望渲染一次的函数；
+
+```js
+function comp(){
+		function initFun(){
+				console.log('...');
+				return 1;
+		}
+		//直接使用initFun作为参数每次渲染时候都会执行，输出...
+		const [count,setCount] = useState(initFun());
+		
+		//使用回调函数则可以避免每次调用
+		const [cb,setCb] = useState(()=>initFun());
+}
+
+//useRef也能实现类似效果
+function Charts(props) {
+  const node = useRef(null);
+  // 只会被创建一次
+  function getObserver() {
+    if (node.current === null) {
+      node.current = new Chart();
+    }
+    return node.current;
+  }
+
+  // 当你需要，调用 getObserver()
+}
+
+
+//虽然useMemo也能做缓存，但不能保证不会重新运行。
+```
 
 
 
-#### useEffect （副作用）
+#### useEffect （副作用）（DOM render后执行）
 
 `useEffect`给函数组件增加操作副作用的能力。它跟 `class` 组件中的 `componentDidMount`、`componentDidUpdate` 和 `componentWillUnmount` 具有相同的用途，只不过被合并成了一个 API
 
@@ -69,10 +118,10 @@ React 保持对当先渲染中的组件的追踪。多亏了 [Hook 规范](https
 
 ```js
  useEffect(() => {
-    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    let chatId = setTimeout(()=>{ console.log(">>")},100)
 
     return () => {
-      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+     	clearTimeout(chatId);
     };
   });
 ```
@@ -85,7 +134,7 @@ React 保持对当先渲染中的组件的追踪。多亏了 [Hook 规范](https
 
 与 `componentDidMount` 或 `componentDidUpdate` 不同，使用 `useEffect` 调度的 effect 不会阻塞浏览器更新屏幕，这让你的应用看起来响应更快。大多数情况下，effect 不需要同步地执行。在个别情况下（例如测量布局），有单独的 [`useLayoutEffect`](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-reference.html#uselayouteffect) Hook 供你使用，其 API 与 `useEffect` 相同。
 
-- 为什么返回一个函数：讲事件逻辑放在一起
+- 为什么返回一个函数：将事件逻辑放在一起
 - 何时清除Effect：在组件卸载时执行清除操作。每次执行effect时，会对上一个effect进行清除，保证props等发生改变而不更新ui的bug。
 
 
@@ -103,6 +152,93 @@ useEffect(() => {
 如果想执行只运行一次的 effect（仅在组件挂载和卸载时执行），可以传递一个空数组（`[]`）作为第二个参数。这就告诉 React 你的 effect 不依赖于 props 或 state 中的任何值，所以它永远都不需要重复执行。这并不属于特殊情况 —— 它依然遵循依赖数组的工作方式。
 
 如果你传入了一个空数组（`[]`），effect 内部的 props 和 state 就会一直拥有其初始值。尽管传入 `[]` 作为第二个参数更接近大家更熟悉的 `componentDidMount` 和 `componentWillUnmount` 思维模式，但我们有[更好的](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies)[方式](https://react-1251415695.cos-website.ap-chengdu.myqcloud.com/docs/hooks-faq.html#what-can-i-do-if-my-effect-dependencies-change-too-often)来避免过于频繁的重复调用 effect。除此之外，请记得 React 会等待浏览器完成画面渲染之后才会延迟调用 `useEffect`，因此会使得额外操作很方便。
+
+
+
+#### useCallback
+
+
+
+
+
+
+
+### 性能优化
+
+类组件中有`PureComponent`实现的浅比较以及`shouldComponentUpdate()`周期函数可以用于性能优化。在`hooks`中，可以使用`React.memo`来做优化。
+
+`React.memo`不是一个Hook，它等同于`PureComponent`，但它只比较`props`，因为没有单一的`state`可以比较。
+
+`React.memo`接收第二个参数来指定自定义比较`props`的函数。如果返回true,则跳过更新。
+
+```js
+function App() {
+
+  const [count,setCount] = useState(0);
+  const [val,setVal] = useState('');
+
+
+  return (
+    <div className="App">
+      {count}
+      <Child count={count}/>
+      <button onClick={()=>setCount(count+1)}>点击+1</button>
+      <input value={val} onChange={e=> setVal(e.target.value)} />
+    </div>
+  );
+}
+//一般情况
+function Child(props){
+    console.log('Child');
+
+    return (
+        <div>
+            {props.count}
+        </div>
+    )
+
+}
+
+```
+
+![no](https://tva1.sinaimg.cn/large/006y8mN6ly1g8qz14ic43g30i80beacx.gif)
+
+```js
+//使用memo
+const Child = React.memo(function(props){
+    console.log('Child');
+
+    return (
+        <div>
+            {props.count}
+        </div>
+    )
+})
+```
+
+![yes](https://tva1.sinaimg.cn/large/006y8mN6ly1g8qz15txnxg30i80bego2.gif)
+
+使用了`React.memo`之后，父组件传入子组件的props不改变时，子组件不会发生渲染。
+
+或者使用useMemo同样能达到优化效果
+
+```js
+function App() {
+  const [count, setCount] = useState(0);
+  const [val, setVal] = useState('');
+  const child = useMemo(() => <Child count={count} /> , [count]) //使用useMemo缓存组件
+  return (
+    <div className="App">
+      {count}
+      {child} //调用
+      <button onClick={() => setCount(count + 1)}>点击+1</button>
+      <input value={val} onChange={e => setVal(e.target.value)} />
+    </div>
+  );
+}
+```
+
+
 
 
 
