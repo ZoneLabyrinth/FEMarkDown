@@ -28,7 +28,7 @@ React和Vue的范围无可否认相似：两者都是基于轻量级组件的库
 
 以下演示了一个简单的Vue应用程序。它打印一条消息，并有一个动态反转消息的按钮：
 
-```
+```js
 // HTML
 <div id =“app”> 
   <p> {{message}} </ p> 
@@ -50,7 +50,7 @@ new Vue（{
 
 相比之下，React应用程序避开模板并要求开发人员在Javascript中创建他们的DOM，通常是使用JSX。下面是使用React实现的同一个简单应用程序：
 
-```
+```js
 // HTML
 <div id =“app”> </ div>
 // JS（预翻译）
@@ -152,7 +152,7 @@ Vue还具有组件系统和渲染功能。但是React的渲染系统更具可配
 
 React Native是一个使用Javascript构建本机移动应用程序的库。它与React.js相同，只使用本机组件而不是使用Web组件。如果您已经学习了React.js，那么您将很容易获得React Native，反之亦然。
 
-```
+```js
 // JS
 从'react'导入React，{Component}; 
 从'react-native'导入{AppRegistry，Text，View};  

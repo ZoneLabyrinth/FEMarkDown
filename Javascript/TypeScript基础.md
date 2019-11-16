@@ -70,5 +70,20 @@ emnu Duck {
 
 ### 添加静态方法
 
+### 接口
 
+```typescript
+interface User{
+	name: string,
+	age?: number //可以没有
+  readonly isMale: boolean  //只读，不可修改
+	say: (sentence: string) => string //函数类型 user.say = (sentence) =>{return 'hello'}
+ 
+}
+// 继承
+interface root extends User, SuperUser {
+  	say:() => void
+}
+
+```
 
