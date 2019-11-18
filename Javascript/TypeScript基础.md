@@ -153,3 +153,49 @@ const add: (a:number, b:number) => number =(a:number,b:number) => a + b
 // 重载
 ```
 
+### 泛型 T
+
+```typescript
+//捕获开发者传入参数类型，然后使用T做参数类型和返回值的类型
+function returnItem<T>(para: T): T {
+	return para
+}
+//多个类型参数
+function swap<T,U>(tuple:[T,U]:[U:T]){
+    return [tuple[1],tuple[0]]
+}
+swap([1,'one'])
+//泛型变量
+function getLength<T>(arg: Array<T>):T[] {  //arg: T[]
+    console.log((arg as Array<any>).length)
+    return arg
+}
+//泛型接口
+interface ReturnItemFn<T> {
+    (para:T):T
+}
+//泛型约束
+type Params = number | string
+class Stack<T extends Params> {
+    private arr: T[] =[]
+    public: push(item:T){
+        this.arr.push(item)
+    }
+}
+// 泛型约束与索引类型
+// 获取键值时
+function getProperty(obj: T, key: K) {
+    return obj[key];  //当key不存在obj上时报错
+}
+// 使用keyof
+function getValue<T extends object, U extends keyof T>(obj: T, key: U) {
+    return obj[key]; // ✔
+}
+//在泛型中使用类类型
+//创建工厂函数时 new ()
+function create<T>(c:{new ():T}):T{
+    return new c();
+}
+
+```
+
