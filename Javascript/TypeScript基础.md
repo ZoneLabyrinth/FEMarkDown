@@ -8,7 +8,7 @@
 - `symbol`
 - `bigint` 操作大整数
 
-### 其他类型
+### 其他类型  any/unkown/array/tuple/object
 
 - `any`  相当于跳过检查
 
@@ -31,7 +31,7 @@
 
 -  `Object` 非原始类型，
 
-### 枚举
+### 枚举 emnu
 
 #### 数字枚举
 
@@ -70,13 +70,13 @@ emnu Duck {
 
 ### 添加静态方法
 
-### 接口
+### 接口 interface
 
 ```typescript
 interface User{
 	name: string,
 	age?: number //可以没有
-  readonly isMale: boolean  //只读，不可修改
+    readonly isMale: boolean  //只读，不可修改
 	say: (sentence: string) => string //函数类型 user.say = (sentence) =>{return 'hello'}
  
 }
@@ -85,5 +85,71 @@ interface root extends User, SuperUser {
   	say:() => void
 }
 
+```
+
+### 类
+
+#### 抽象类 abstract
+
+抽象类作为其他派生类的基类使用，一般不会直接被实例化，不同于接口，抽两类可以包含成员的实现细节。
+
+```typescript
+abstract class User {
+    abstract handsome(): void;
+    say(): {
+        console.log('Hello world')
+    }
+}
+new User() //报错
+class root extends User{
+    handsome(){
+        console.log('so handsome');
+    }
+};
+root.handsome(); //so handsome
+root.say(); //hello world;
+
+
+```
+
+#### 访问限定符 public/private/protected
+
+同传统面向对象语言一样，三类访问限定符的用法类似；
+
+```typescript
+class User {
+	public name(n){
+		console.log(`name is ${n}`)
+	}
+    private money(){
+        console.log('total a billion')
+    }
+    protected creditCard() {
+        console.log('8888888888');
+    }
+}
+class Root extends User {
+	init() {
+        this.creditCard();
+    }
+}
+
+const carl = new User();
+carl.name('carl') // root;
+carl.money() //受保护
+carl.creditCard()  //受保护
+
+const root = new Root();
+root.init() //888888888
+
+```
+
+### 函数
+
+定义函数类型
+
+```typescript
+const add: (a:number, b:number) => number =(a:number,b:number) => a + b
+// 重载
 ```
 
