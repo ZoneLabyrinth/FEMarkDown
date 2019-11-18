@@ -253,7 +253,145 @@ kill
   - `yum install iftop`
   - `iftop -P`
 
+### 服务
 
+##### iptables表链
 
+- 规则表
+  - `filter nat mangle raw`
+- 规则链
+  - `INPUT OUTPUT FORWARD`
+  - `PREROUTING POSTROUTING`
 
+#### filter表
 
+- `iptables -t filter` 命令 规则链 规则
+  - 命令
+    - -L
+    - -A -l 
+    - -D -F -P 
+    - -N -X -E
+
+```shell
+iptables -t filter -A INPUT -s 10.0.0.1 -j ACCEPT
+```
+
+#### nat表
+
+- `iptables -t nat` 命令 规则链 规则
+  - `PREROUTING` 目的地址转换
+  - `POSTROUTING` 源地址转换
+
+配置文件
+
+```shell
+/etc/sysconfig/iptables
+# centos 6
+service iptables save|start| stop | restart
+# centos 7
+yum install iptables-services
+```
+
+#### firewallD服务
+
+```shell
+systemctl start |restart|stop  firewalld
+# 所有端口
+firewall-cmd --zone=public --list-ports
+# zone
+firewall-cmd --get-zones
+ #开放443
+firewall-cmd --add-service=https 
+# 添加端口 --add-port   --permanent 永久开放
+firewall-cmd --add-port=81/tcp --permanent 永久开放端口 
+# 删除端口
+firewall-cmd --remove-port=81/tcp --permanent 永久删除端口 需重启
+# --permanent需重启
+firewall-cmd --reload
+# firewall-cmd --list-all
+```
+
+### SSH
+
+```
+# 配置文件
+/etc/ssh/sshd_config 服务端 
+/etc/ssh/ssh_config 客户端
+
+17: port 登录端口
+
+38 permitRootLogin root登录
+```
+
+#### 公钥认证
+
+- `ssh-keygen -t rsa`
+- `ssh-copy-id`    (`ssh-copy-id -i /root/.ssh/id_rsa.pub root@0.0.0.0`)
+
+#### SCP
+
+```shell
+scp kpi.txt root@0.0.0.0:/tmp/ 拷贝到服务器
+scp root@0.0.0.0:/tmp/  /codes    拷贝到本地
+```
+
+#### FTP
+
+```shell
+yum install vsftpd ftp
+systemctl start vsftpd.service  
+systemctl enable vsftpd.service 重启
+# vsftpd 限制用户
+# /etc/vsftpd/vsftpd.conf 配置文件
+# /etc/vsftpd/ftpusers  记录不允许用户
+# /ets/vsftpd/user_list 黑白名单
+# SELINUX
+getsebool -a
+setsebool vsftpd -P 1
+```
+
+#### vsftpd 虚拟用户验证
+
+- `guest_enable=YES`  支持虚拟用户
+- `guest_username=vuser` 虚拟用户身份
+- `user_config_dir=/etc/vsftpd/vuserconfig`  权限控制文件
+- `allow_writeable_chroot=YES`  虚拟用户可写
+- `pam_service_name=vsftpd.vuser` 验证方式
+
+### NFS
+
+### Nginx
+
+#### OpenResty
+
+```shell
+yum install -y yum-utils
+yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo
+yum install openresty
+# 配置文件
+/usr/local/openresty/nginx/conf/nginx.conf
+service openresty start | stop | restart | reload
+#nginx配置
+/usr/local/openresty/nginx/sbin  #启动脚本
+/usr/local/openresty/nginx/conf # 配置文件
+/usr/local/openresty/nginx/logs # 日志
+/usr/local/openresty/nginx/html # 静态html
+
+```
+
+#### 基于域名的虚拟主机`
+
+```
+server {
+	listen 80;
+	server_name www.tasseles.top;
+	location / {
+		root html/servera;
+		index index.html index.htm
+	}
+}
+# 配置
+/etc/hosts
+127.0.0.1  www.tassels.top www.desertcamel.cn
+
+```
