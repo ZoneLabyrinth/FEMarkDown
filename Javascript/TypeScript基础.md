@@ -199,3 +199,66 @@ function create<T>(c:{new ():T}):T{
 
 ```
 
+### 装饰器
+
+### Refelct MetaData
+
+### 明确赋值断言 !
+
+```typescript
+
+let x: number;
+init();
+console.log(x! + x!);  //不加!提示未赋值
+function init() {
+    x = 10;
+}
+```
+
+### is关键字
+
+```typescript
+// 用于判断返回类型 真假
+function isString(test: any) test is string{
+	return test === 'string'
+}
+//限定了参数类型
+```
+
+### 可调用类型注解
+
+### Omit
+
+### 索引类型
+
+```typescript
+// 获取键值
+class Image = {
+    public src: string = 'https'
+    public alt: string = 'img'
+    public width: number = 500
+}
+type propsname = keyof Image  // src | alt | width
+type propsType = Image[propsname] //string | number
+// 获取键值函数
+function pick<T, K extends keyof T>(o: T, names: K[]): T[K][]{
+	return names.map(n=> o[n])
+}
+```
+
+### 映射类型
+
+```typescript
+// 将User属性变为全部可选
+interface User {
+    username: string
+    id: number
+    token:string
+    role: sting
+}
+// [K in keys] K 类型变量，keys 字符串字面量构成的联合类型，表示一组属性名
+// T[K] 索引访问
+type partial<T> = {[K in typeof T]?: T[K]} // username?: string
+
+```
+
