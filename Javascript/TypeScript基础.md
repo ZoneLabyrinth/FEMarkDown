@@ -8,7 +8,7 @@
 - `symbol`
 - `bigint` 操作大整数
 
-### 其他类型  any/unkown/array/tuple/object
+### 其他类型  any/unkown/never/array/tuple/object
 
 - `any`  相当于跳过检查
 
@@ -262,3 +262,85 @@ type partial<T> = {[K in typeof T]?: T[K]} // username?: string
 
 ```
 
+### 条件类型
+
+```typescript
+// 接收Bool值，ture返回string类型，false返回number类型。类似三目
+declare function f<T extends boolean>(x: T): T extends true ? string: number;
+// 裸类型参数 分布式有条件类型，不能包裹其他类型
+type NakedUsage<T> = T extends boolean? "yes": "no"
+// 类型参数被包裹在元组内
+type WrappedUsage<T> = [T] extends [boolean] ? "YES":"NO"
+
+// 分布式有条件类型在实例化时会自动分发成联合类型 相当于map
+type Distributed = NakedUsage<number | boolean> //  = NakedUsage<number> | NakedUsage<boolean> =  "NO" | "YES"
+type NotDistributed = WrappedUsage<number | boolean > // "NO"
+
+// 找出两部分不同
+type R = Diff<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "b" | "d"
+//
+type Diff<T, U> = T extends U ? never : T;
+
+
+```
+
+### infer 推断
+
+```typescript
+type ParmaType<T> = T extends (param: infer P) => any ? P : T
+// 如果T能赋值给(param: infer P) => any,则结果是（param：infer P) => any中的P,否则返回T
+```
+
+#### 应用
+
+```typescript
+// tuple 转 union, 比如 [string,number] -> string | number:
+type ElementOf<T> = T extends Array<infer E>? E : never;
+type ATuple = [string,number];
+type ToUnion = ElementOf<ATuple>;
+        
+```
+
+### 工具类型
+
+```typescript
+//ReturnType、Partial、ConstructorParameters、Pick
+
+// 关键字 + - -?变为必选 -readonly变为非只读
+type Required<T> = { [P in keyof T]-?: T[p]};
+
+// Exclude<T>  T中排除可分配给U的元素
+type Exclude<T,U> = T extends U ? never : T;
+type T = Exclude<1 | 2, 1 | 3> // 2
+
+// Omit 忽略T中某些属性
+type Omit<T, K> = Pick<T, Exclude<keyof T,K>>
+type Foo = Omit<{name: string,age: number},'name'> // {age:number}
+
+// Merge 合并 Compute将交叉类型合并
+type Compute<A extends any> = A extends Function ? A :{[K in keyof A]: A[k]}
+type R1 = Compute<{x:'x' & {y:"y"}}
+// Merge 合并
+type Merge<01 extends object, 02 extends object> = Compute<01 & Omit<02,keyof 01>>
+
+// Intersection<T,U> 取T属性和U的交集
+type Props = { name: string; age: number; visible: boolean };
+type DefaultProps = { age: numebr }
+type DuplicateProps = Intersection<Props, DefalutProps>; //{age:number}
+
+// Intersection是 Extract和Pick的结合
+Intersection<T,U> = Extract<T,U> + Pick<T,U>
+
+//Overwrite<T,U> 用U覆盖T相同的属性
+type Props = {name: string; age: number; visible: boolean };
+type NewProps = {age: string; other:string};
+type ReplaceProps = Overwrite<props,NewProps> // {name:string,age:string; visable:boolean}
+//即
+type Overwrite<T extends object, U extends object, I = Diff<T,U>& Intersection<U,T>> = Pick<I, keyof I>;
+
+// Mutable<T> 移除T所有属性的readonly
+type Mutable<T> = {
+	-readonly [P in keyof T]:T[P]
+}
+
+```
