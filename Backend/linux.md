@@ -313,7 +313,7 @@ firewall-cmd --reload
 
 ### SSH
 
-```
+```shell
 # 配置文件
 /etc/ssh/sshd_config 服务端 
 /etc/ssh/ssh_config 客户端
@@ -321,6 +321,8 @@ firewall-cmd --reload
 17: port 登录端口
 
 38 permitRootLogin root登录
+
+systemctl restart sshd.service
 ```
 
 #### 公钥认证
@@ -328,7 +330,7 @@ firewall-cmd --reload
 - `ssh-keygen -t rsa`
 - `ssh-copy-id`    (`ssh-copy-id -i /root/.ssh/id_rsa.pub root@0.0.0.0`)
 
-#### SCP
+#### `SCP`
 
 ```shell
 scp kpi.txt root@0.0.0.0:/tmp/ 拷贝到服务器
@@ -350,7 +352,7 @@ getsebool -a
 setsebool vsftpd -P 1
 ```
 
-#### vsftpd 虚拟用户验证
+#### `vsftpd` 虚拟用户验证
 
 - `guest_enable=YES`  支持虚拟用户
 - `guest_username=vuser` 虚拟用户身份
@@ -360,9 +362,9 @@ setsebool vsftpd -P 1
 
 ### NFS
 
-### Nginx
+### `Nginx`
 
-#### OpenResty
+#### `OpenResty`
 
 ```shell
 yum install -y yum-utils
@@ -381,7 +383,7 @@ service openresty start | stop | restart | reload
 
 #### 基于域名的虚拟主机`
 
-```
+```shell
 server {
 	listen 80;
 	server_name www.tasseles.top;

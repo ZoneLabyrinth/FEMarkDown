@@ -296,7 +296,7 @@ type ParmaType<T> = T extends (param: infer P) => any ? P : T
 ```typescript
 // tuple 转 union, 比如 [string,number] -> string | number:
 type ElementOf<T> = T extends Array<infer E>? E : never;
-type ATuple = [string,number];
+type ATuple = [string,number]; 
 type ToUnion = ElementOf<ATuple>;
         
 ```
@@ -508,6 +508,5 @@ module.exports = {
     "protocol": "inspector"
 }
 
-  
 ```
 
