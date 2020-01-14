@@ -21,7 +21,7 @@ let s1= Symbol.for('foo');
 let s2 = Symbol.for('foo');
 s1 === s2 // true
 
-、、Symbol.keyFor方法返回一个已登记的Symbol类型值的key。
+//Symbol.keyFor方法返回一个已登记的Symbol类型值的key。
 var s1 = Symbol.for("foo");
 Symbol.keyFor(s1) // "foo"
  

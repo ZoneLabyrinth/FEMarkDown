@@ -270,7 +270,7 @@ Array.prototype.flat = function() {
         console.log(c)
 
         Function.prototype._bind = function (fn) {
-            if (typeof this !== 'fucolalreenction') {
+            if (typeof this !== 'function') {
                 throw new TypeError('Error')
             }
             let args = [...arguments].slice(1)
@@ -295,12 +295,41 @@ Array.prototype.flat = function() {
 
 
 
-```
+```js
 function _new(fn,...args){
-                let obj = Object.create(fn.prototype)
-                const ret = fn.apply(obj,args)
-                return ret instanceof Object? ret : obj
+  let obj = Object.create(fn.prototype)
+  const ret = fn.apply(obj,args)
+  return ret instanceof Object? ret : obj
+}
+```
 
-            }
+### Curry
+
+```js
+function curry(fn,...args) {
+    let len = fn.length;
+
+    return function (){
+        console.log(this)
+        let _args = [...arguments];
+        args = args.concat(_args);
+        if(args.length < len){
+            return curry.call(this, fn, ...args)
+        }else{
+            return fn.apply(this, args)
+        }
+    }
+}
+
+//test
+function add(a,b,c,d) {
+    console.log(a+b+c+d);
+}
+
+let adds = curry(add,6);
+adds(2)(3,4)
+adds(2)(3)(4)
+
+
 ```
 

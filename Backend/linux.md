@@ -10,6 +10,25 @@
 
 `more less`  space更多
 
+
+
+### 环境变量
+
+```shell
+PATH=$PATH:/usr/local/bin #对当前终端及子shell
+```
+
+- 配置文件
+  - `/etc/profile`
+  - `/etc/profile`
+  - `~/.bash_profile`
+  - `~/.bashrc`
+  - `/etc/bashrc`
+
+`/etc/`下的文件为所有用户通用配置
+
+`~/`下为当前用户配置
+
 ### 打包压缩
 
 `tar czf`   /路径  c 打包  x解压  f指定操作类型为文件 z压缩
@@ -352,7 +371,7 @@ getsebool -a
 setsebool vsftpd -P 1
 ```
 
-#### `vsftpd` 虚拟用户验证
+#### `vsftpd` 虚拟户验证
 
 - `guest_enable=YES`  支持虚拟用户
 - `guest_username=vuser` 虚拟用户身份
