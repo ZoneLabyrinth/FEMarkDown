@@ -52,13 +52,9 @@ if(typeof Promise !== 'undefined'){
         textNode.data = String(counter)
     }
 }else if(typeof setImmediate !== 'undefined'){
-
     timerFunc = () =>{
-
         setImmediate(flushCallback)
-
     }
-
 }else{
     timerFunc = () =>{
         setTimeout(flushCallback, 0);

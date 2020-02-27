@@ -80,7 +80,6 @@ const deepClone = function (obj, hash=new WeakMap()) {
     if(type.includes(obj.constructor)) return new obj.constructor(obj);
     //如果成环了，参数obj = obj.loop = 最初obj 会在weakMap中找到第一次放入的obj提前返回第一次放入weakMap的cloneObj
     
-    
     let allDesc = Object.getOwnPropertyDescriptors(obj);
     let cloneObj = Object.create(Object.getPrototypeOf(obj),allDesc);
     hash.set(obj,cloneObj)

@@ -186,7 +186,7 @@ AppRegistry.registerComponent（'HelloWorld'，（）=> HelloWorld）;
 
 这两个图书馆都是开源的，但React诞生于Facebook并受益于该赞助。致力于React的开发商和公司可以确保持续维护。
 
-相比之下，Vue是由一位开发人员Evan You创建的，而您目前是Vue唯一的全职维护人员。Vue有一些企业赞助，但没有Facebook或Google的规模。
+相比之下，Vue是由一位开发人员Evan You创建的，而他目前是Vue唯一的全职维护人员。Vue有一些企业赞助，但没有Facebook或Google的规模。
 
 值得称赞的是Vue团队的小尺寸和独立性并未成为劣势。Vue有一个常规的发布周期，更令人印象深刻的是，Vue在Github上只有54个未解决的问题，相比之下，有3456个已关闭的问题，而React有更大的530个未决问题，而3447已经关闭。
 
